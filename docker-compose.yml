@@ -1,0 +1,54 @@
+services:
+  web:
+    build: .
+    container_name: docker_p2_web
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/var/www/html
+    depends_on:
+      - banco
+    networks:
+      - dockerp2_network
+    restart: unless-stopped
+
+  banco:
+    image: mysql:8.0
+    container_name: docker_p2_banco
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: dockerp2_db
+      MYSQL_USER: dockerp2_user
+      MYSQL_PASSWORD: dockerp2123
+    ports:
+      - "3306:3306"
+    volumes:
+      - banco_data:/var/lib/mysql
+      - ./tabelacontato.sql:/docker-entrypoint-initdb.d/tabelacontato.sql
+    networks:
+      - dockerp2_network
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: dockerp2_phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root123
+      MYSQL_ROOT_PASSWORD: root123
+    ports:
+      - "8080:80"
+    depends_on:
+      - banco
+    networks:
+      - dockerp2_network
+    restart: unless-stopped
+
+volumes:
+  banco_data:
+
+networks:
+  dockerp2_network:
+    driver: bridge
