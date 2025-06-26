@@ -1,4 +1,4 @@
-# webapp-docker-config
+# Aplicação Web PHP com MySQL – Deploy com Docker
 
 Este repositório foi estruturado com foco no deploy automatizado via Docker de uma aplicação web desenvolvida em PHP, integrando banco de dados MySQL e interface de administração via phpMyAdmin, utilizando um Dockerfile para a construção da imagem da aplicação e um docker-compose.yml para orquestrar os serviços necessários.
 
